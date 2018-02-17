@@ -16,7 +16,7 @@ void print_matrix(struct matrix *m) {
   for (i = 0; i < m->rows; i++){
     int j;
     for (j = 0; j < m->cols; j++){
-      printf("%f ", m->m[i][j]);
+      printf("%f  ", m->m[i][j]);
     }
     printf("\n");
   }
@@ -52,12 +52,16 @@ Returns:
 a*b -> b
 */
 void matrix_mult(struct matrix *a, struct matrix *b) {
-  struct matrix* output = new_matrix(a->rows, b->cols);
+  if (a->lastcol != b->rows){
+    return;
+    printf("can't multiply this\n");
+  }
+  struct matrix* output = new_matrix(a->rows, b->lastcol);
 
   int i;
   for (i = 0; i < a->rows; i++){
     int j;
-    for (j = 0; j < b->cols; j++){
+    for (j = 0; j < b->lastcols; j++){
       int inner;
       int product = 0;
       for (inner = 0; inner < a->cols; inner++){
