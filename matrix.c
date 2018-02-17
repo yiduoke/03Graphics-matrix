@@ -12,6 +12,14 @@ Returns:
 print the matrix
 */
 void print_matrix(struct matrix *m) {
+  int i;
+  for (i = 0; i < m->rows; i++){
+    int j;
+    for (j = 0; j < m->cols; j++){
+      printf("%f ", m->m[i][j]);
+    }
+    printf("\n");
+  }
 }
 
 /*-------------- void ident() --------------
@@ -21,6 +29,18 @@ Returns:
 turns m in to an identity matrix
 */
 void ident(struct matrix *m) {
+  int i;
+  for (i = 0; i < m->rows; i++){
+    int j;
+    for (j = 0; j < m->cols; j++){
+      if (i == j){
+        m->m[i][j] = 1;
+      }
+      else{
+        m->m[i][j] = 0;
+      }
+    }
+  }
 }
 
 
@@ -32,9 +52,22 @@ Returns:
 a*b -> b
 */
 void matrix_mult(struct matrix *a, struct matrix *b) {
+  struct matrix* output = new_matrix(a->rows, b->cols);
+
+  int i;
+  for (i = 0; i < a->rows; i++){
+    int j;
+    for (j = 0; j < b->cols; j++){
+      int inner;
+      int product = 0;
+      for (inner = 0; inner < a->cols; inner++){
+        product += a->m[i][inner] * b->m[inner][j];
+      }
+      output->m[i][j] = product;
+    }
+  }
+  copy_matrix(output, b);
 }
-
-
 
 /*===============================================
   These Functions do not need to be modified
