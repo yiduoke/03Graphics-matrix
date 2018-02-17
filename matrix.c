@@ -30,6 +30,7 @@ turns m in to an identity matrix
 */
 void ident(struct matrix *m) {
   int i;
+  m->lastcol = m->rows;
   for (i = 0; i < m->rows; i++){
     int j;
     for (j = 0; j < m->cols; j++){
@@ -53,8 +54,8 @@ a*b -> b
 */
 void matrix_mult(struct matrix *a, struct matrix *b) {
   if (a->lastcol != b->rows){
-    return;
     printf("can't multiply this\n");
+    return;
   }
   struct matrix* output = new_matrix(a->rows, b->lastcol);
 
@@ -63,13 +64,17 @@ void matrix_mult(struct matrix *a, struct matrix *b) {
     int j;
     for (j = 0; j < b->lastcol; j++){
       int inner;
-      int product = 0;
-      for (inner = 0; inner < a->cols; inner++){
+      float product = 0;
+      for (inner = 0; inner < a->lastcol; inner++){
         product += a->m[i][inner] * b->m[inner][j];
+
       }
       output->m[i][j] = product;
+      printf("product: %f\n", product);
     }
   }
+  printf("\noutput\n");
+  print_matrix(output);
   copy_matrix(output, b);
 }
 
