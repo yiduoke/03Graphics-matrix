@@ -15,8 +15,8 @@ void print_matrix(struct matrix *m) {
   int i;
   for (i = 0; i < m->rows; i++){
     int j;
-    for (j = 0; j < m->cols; j++){
-      printf("%f  ", m->m[i][j]);
+    for (j = 0; j < m->lastcol; j++){
+      printf("%d  ", (int)m->m[i][j]);
     }
     printf("\n");
   }
@@ -67,14 +67,10 @@ void matrix_mult(struct matrix *a, struct matrix *b) {
       float product = 0;
       for (inner = 0; inner < a->lastcol; inner++){
         product += a->m[i][inner] * b->m[inner][j];
-
       }
       output->m[i][j] = product;
-      printf("product: %f\n", product);
     }
   }
-  printf("\noutput\n");
-  print_matrix(output);
   copy_matrix(output, b);
 }
 
